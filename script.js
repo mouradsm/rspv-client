@@ -44,8 +44,8 @@
 
             $http({
                 method: 'GET',
-                //url: 'http://hidden-refuge-3353.herokuapp.com/api/convidados/'
-                url: 'http://localhost:3000/api/convidado/' + filtro
+                url: 'http://hidden-refuge-3353.herokuapp.com/api/convidados/'
+                //url: 'http://localhost:3000/api/convidado/' + filtro
             }).success(function (result) {
                 console.log(result);
                 if (result.length > 0) {
