@@ -90,6 +90,11 @@
 
         $scope.save = function(){
 
+            console.log($scope.confirmados);
+
+
+
+
         };
 
 
