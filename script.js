@@ -4,6 +4,10 @@
 
     app.controller('OrderFormController', function ($scope, $http) {
 
+
+        $scope.$on('LOAD', function(){$scope.loading=true});
+        $scope.$on('UNLOAD', function(){$scope.loading=false});
+
         $scope.Convidado = [];
         $scope.convidadosProcessados = [];
         $scope.confirmados = [];
@@ -47,6 +51,7 @@
                 url: 'http://hidden-refuge-3353.herokuapp.com/api//convidado/' + filtro
                 //url: 'http://localhost:3000/api/convidado/' + filtro
             }).success(function (result) {
+                $scope.$emit('LOAD');
                 if (result[0].status == 0) {
                 if (result.length > 0) {
                     $scope.Convidado = result[0];
@@ -80,9 +85,10 @@
                             });
                             $scope.convidadosProcessados = result[0].Acompanhantes;
                         }
-
-
+                        $scope.$emit('UNLOAD');
                         $scope.filtro = undefined;
+                        
+
                     } else {
                         alert('Nome inválido! Digite exatamente como está no convite. Ex: Fulano e Família')
                     }
