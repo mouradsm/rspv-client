@@ -1,16 +1,51 @@
 'use strict';
+
 (function () {
     var app = angular.module('rspv', []);
 
+    var currentMessage = "";
+    var classe         = "";
 
+    app.factory('flash', function(){
 
-    app.controller('ConvidadoController', function ($scope, $http) {
+        return {
+            setClass: function(novaClasse){
+                 classe = novaClasse;
+            },
+            getClass: function(){
+                return classe;
+            },
+            setMessage: function(message){
+                currentMessage = message;
+            },
+            getMessage: function(){
+                return currentMessage;
+            }
+        }
+    });
 
-        $scope.convidados = [];
-        $scope.confirmados = [];
+    app.controller('ConvidadoController', function ($scope, $http, flash) {
+
+        $scope.flash        = flash;
+        $scope.convidados   = [];
+        $scope.confirmados  = [];
 
         function processaConvidados (convidados){
             var objConvidado = convidados[0];
+
+            if($.isEmptyObject(objConvidado)){
+                flash.setMessage('Convidado inválido! Verifique e escreva corretamente.')
+                flash.setClass('alert alert-danger');
+
+                return false;
+            }
+
+            if(objConvidado.status == '1'){
+                flash.setMessage('Convidado já confirmado!');
+                flash.setClass('alert alert-info');
+
+                return false;
+            }
 
             var tag = processaTag(objConvidado.Tag)
 
@@ -33,7 +68,7 @@
             });
 
             return objConvidado.Acompanhantes;
-        };
+        }
 
         function processaTag(tag){
             var arrTag = tag.split(' e ');
@@ -74,23 +109,21 @@
             $http({
                 method: 'PUT',
                 url: 'http://hidden-refuge-3353.herokuapp.com/api/convidado/' + tag + '/' + confirmados
-                //url: 'http://localhost:5000/api/lista/'+id+'/'+email
             }).success(function () {
-                alert('Confirmado com Sucesso!!');
+                flash.setMessage('Convidado confirmado! Obrigado!');
+                flash.setClass('alert alert-success');
             });
 
-            console.log(confirmados);
-
-            $scope.Convidado = [];
-            $scope.convidadosProcessados = [];
-            $scope.confirmados = [];
+            $scope.convidados   = [];
+            $scope.confirmados  = [];
+            $scope.tag          = [];
 
         };
 
         $scope.getConvidado = function(tag){
             if(typeof tag == 'string'){
                 
-                var url     = 'http://hidden-refuge-3353.herokuapp.com/api//convidado/' + tag;
+                var url     = 'http://hidden-refuge-3353.herokuapp.com/api/convidado/' + tag;
                 var method  = 'GET';
 
                 $http({
@@ -98,7 +131,6 @@
                     method  : method
                 }).
                 success(function(data){
-                    //console.log('Data: ',data);
                     $scope.convidados = processaConvidados(data);
                 }).
                 error(function(err){
@@ -107,127 +139,5 @@
             }
         }
     });
-
-
-
-
-
-/*      $scope.$on('LOAD', function(){$scope.loading=true});
-        $scope.$on('UNLOAD', function(){$scope.loading=false});
-
-        $scope.Convidado = [];
-        $scope.convidadosProcessados = [];
-        $scope.confirmados = [];
-
-        $scope.toggleActive = function (s) {
-            s.active = !s.active;
-        };
-
-        // Método útil para calcular o preço total
-        $scope.total = function () {
-            var total = 0;
-
-            // Uso o método auxiliar do Angular 'forEach'
-            // para iterar o array services
-
-            angular.forEach($scope.convidadosProcessados, function (s) {
-
-                if (s.active) {
-                    if ($.inArray(s.nome, $scope.confirmados) == -1) {
-                        $scope.confirmados.unshift(s.nome);
-                    }
-                    total += 1;
-                } else {
-                    if ($.inArray(s.nome, $scope.confirmados) != -1) {
-                        $scope.confirmados.pop(s.nome);
-                    }
-                }
-            });
-            return total;
-        };
-
-        $scope.processaConvidados = function (filtro) {
-            // filtro = encodeURIComponent(filtro);
-
-            if (filtro == undefined) {
-                alert('Digite o Nome conforme está no Convite');
-            }
-
-            $http({
-                method: 'GET',
-                url: 'http://hidden-refuge-3353.herokuapp.com/api//convidado/' + filtro
-                //url: 'http://localhost:3000/api/convidado/' + filtro
-            }).success(function (result) {
-                $scope.$emit('LOAD');
-                if (result[0].status == 0) {
-                if (result.length > 0) {
-                    $scope.Convidado = result[0];
-                    console.log(result[0]);
-
-
-                        var tag = result[0].Tag;
-
-                        var convidadosTag = tag.split(' e ');
-
-                        if (convidadosTag.slice(-1) != 'Família') {
-                            angular.forEach(convidadosTag, function (o) {
-                                result[0].Acompanhantes.unshift({ nome: o});
-                            });
-
-                            $scope.convidadosProcessados = result[0].Acompanhantes;
-                        } else {
-                            convidadosTag.pop();
-                            var acompanhantes = result[0].Acompanhantes
-
-                            //sanitariza o que já tinha antes
-
-                            result[0].Acompanhantes = [];
-
-                            angular.forEach(acompanhantes, function (o) {
-                                result[0].Acompanhantes.unshift({ nome: o});
-                            })
-
-                            angular.forEach(convidadosTag, function (o) {
-                                result[0].Acompanhantes.unshift({ nome: o});
-                            });
-                            $scope.convidadosProcessados = result[0].Acompanhantes;
-                        }
-                        $scope.$emit('UNLOAD');
-                        $scope.filtro = undefined;
-                        
-
-                    } else {
-                        alert('Nome inválido! Digite exatamente como está no convite. Ex: Fulano e Família')
-                    }
-                }else{
-                     alert('Convidado já confirmado!');
-                }
-            });
-        };
-
-        $scope.save = function () {
-
-            var tag = $scope.Convidado.Tag;
-            var confirmados = $scope.confirmados;
-
-            $http({
-                method: 'PUT',
-                url: 'http://hidden-refuge-3353.herokuapp.com/api/convidado/' + tag + '/' + confirmados
-                //url: 'http://localhost:5000/api/lista/'+id+'/'+email
-            }).success(function (message) {
-                alert('Confirmado com Sucesso!!');
-            });
-
-            console.log(confirmados);
-
-            $scope.Convidado = [];
-            $scope.convidadosProcessados = [];
-            $scope.confirmados = [];
-
-        };
-
-
-    });*/
-
 })();
 

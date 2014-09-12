@@ -26,13 +26,23 @@
         <h1>Convidados</h1>
 
         <div class="formulario row">
-            <div class="alert alert-info" ng-show='loading'>Carregando...</div>
-            <div class="col-md-9">
-                 <input class="form-control" type="text" placeholder="DIGITE O NOME COMO NO CONVITE" ng-model="tag"/>
-            </div>
+            <div class="col-md-12" >
+                <div class="fade in"  ng-class="flash.getClass()" ng-show="flash.getMessage()">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                   <p class=""> {{flash.getMessage()}}</p>
+                </div>
 
-            <div class="col-md-3">
-                <button class="btn btn-primary" ng-click="getConvidado(tag)" ng-disabled="!tag.length"> Confirmar! </button>
+            </div>
+            <div class="col-md-14">
+                <div class="col-md-9">
+                     <input class="form-control" type="text" placeholder="DIGITE O NOME COMO NO CONVITE" ng-model="tag"/>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary" ng-click="getConvidado(tag)" ng-disabled="!tag.length"> Confirmar! </button>
+                </div>
             </div>
 
         </div>
