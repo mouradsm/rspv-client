@@ -19,7 +19,7 @@
 </head>
 
 <!-- Declare uma nova aplicação AngularJS e associe o controlador -->
-<body ng-app="rspv" ng-controller="OrderFormController">
+<body ng-app="rspv" ng-controller="ConvidadoController">
 <div id="convidados" >
     <form>
 
@@ -28,11 +28,11 @@
         <div class="formulario row">
             <div class="alert alert-info" ng-show='loading'>Carregando...</div>
             <div class="col-md-9">
-                 <input class="form-control" type="text" placeholder="DIGITE O NOME COMO NO CONVITE" ng-model="filtro"/>
+                 <input class="form-control" type="text" placeholder="DIGITE O NOME COMO NO CONVITE" ng-model="tag"/>
             </div>
 
             <div class="col-md-3">
-                <button class="btn btn-primary" ng-click="processaConvidados(filtro)" ng-disabled="!filtro.length"> Confirmar! </button>
+                <button class="btn btn-primary" ng-click="getConvidado(tag)" ng-disabled="!tag.length"> Confirmar! </button>
             </div>
 
         </div>
@@ -40,9 +40,9 @@
         <ul>
             <!-- Percorre o array 'services', atribuindo um manipulador click, e defini ou remove a classe css "active" se necessário -->
             <!--<li ng-repeat="acc in Convidado" ng-click=" toggleActive(acc)" ng-class="{ active:acc.active }"> {{acc.Tag}} </li>-->
-            <li ng-repeat="service in convidadosProcessados" ng-click="toggleActive(service)" ng-class="{ active:service.active }">
+            <li ng-repeat="convidado in convidados" ng-click="toggleActive(convidado)" ng-class="{ active:convidado.active }">
                 <!-- Note o uso do 'current filter', que vai formatar o preço -->
-                {{ service.nome }}
+                {{ convidado.nome }}
             </li>
         </ul>
 
