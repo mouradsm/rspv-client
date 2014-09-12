@@ -66,6 +66,27 @@
             s.active = !s.active;
         };
 
+        $scope.save = function () {
+
+            var tag = $scope.tag;
+            var confirmados = $scope.confirmados;
+
+            $http({
+                method: 'PUT',
+                url: 'http://hidden-refuge-3353.herokuapp.com/api/convidado/' + tag + '/' + confirmados
+                //url: 'http://localhost:5000/api/lista/'+id+'/'+email
+            }).success(function () {
+                alert('Confirmado com Sucesso!!');
+            });
+
+            console.log(confirmados);
+
+            $scope.Convidado = [];
+            $scope.convidadosProcessados = [];
+            $scope.confirmados = [];
+
+        };
+
         $scope.getConvidado = function(tag){
             if(typeof tag == 'string'){
                 
@@ -91,7 +112,7 @@
 
 
 
-/*        $scope.$on('LOAD', function(){$scope.loading=true});
+/*      $scope.$on('LOAD', function(){$scope.loading=true});
         $scope.$on('UNLOAD', function(){$scope.loading=false});
 
         $scope.Convidado = [];
