@@ -27,13 +27,17 @@
 
         <div class="formulario row">
             <div class="col-md-12" >
-                <div class="fade in"  ng-class="flash.getClass()" ng-show="flash.getMessage()">
+                <!--<div class="fade in"  ng-class="flash.getClass()" ng-show="flash.getMessage()">
                 <button type="button" class="close" data-dismiss="alert">
                     <span aria-hidden="true">&times;</span>
                     <span class="sr-only">Close</span>
                 </button>
                    <p class=""> {{flash.getMessage()}}</p>
                 </div>
+-->
+                <div mc-messages></div>
+
+
 
             </div>
             <div class="col-md-14">
@@ -72,7 +76,7 @@
 
 
 <!-- Include AngularJS from Google's CDN -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -82,5 +86,6 @@
 <script src="modules/client/controllers/convidado.js"></script>
 <script src="modules/client/factory.js"></script>
 <script src="modules/client/services/flash.js"></script>
+<script src="message-center.js"></script>
 </body>
 </html>
