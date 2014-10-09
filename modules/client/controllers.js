@@ -1,7 +1,7 @@
 (function () {
 
-  angular.module('flash.controllers', [
-    'flash.controller.convidado'
+  angular.module('rspv.controllers', [
+    'rspv.controller.convidado','rspv.controller.report'
   ]);
 
 }());

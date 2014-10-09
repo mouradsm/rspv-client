@@ -1,9 +1,9 @@
 (function () {
 
     // Criando o módulo de controllers
-    angular.module('flash.controller.convidado', []);
+    angular.module('rspv.controller.convidado', []);
 
-    angular.module('flash.controller.convidado')
+    angular.module('rspv.controller.convidado')
         .controller('ConvidadoController', ConvidadoController);
 
     // Injetando as dependencias
