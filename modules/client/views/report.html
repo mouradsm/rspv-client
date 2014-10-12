@@ -1,10 +1,23 @@
-
 <div class="container">
-    <input type="text" ng-model="filtro"/>
-    <ul>
-        <li ng-repeat="convidado in convidados | filter:filtro">
-            <!-- Note o uso do 'current filter', que vai formatar o preço -->
-            {{ convidado.confirmados }}
-        </li>
-    </ul>
+    <div class="row col-lg-12">
+        <h2>Lista de Confirmação</h2>
+    </div>
+    <div class="row">
+        <h4>Selecione a opção</h4>
+        <label class="radio-inline">
+            <input type="radio" name="inlineRadioOptions"  ng-model="value" value="1" checked=""> Confirmados
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="inlineRadioOptions"  ng-model="value" value="0" checked=""> Não Confirmados
+        </label>
+    </div>
+    <div class="row">
+        <ul class="list-unstyled">
+            <li ng-repeat="convidado in convidados | filter:filtro">
+                <!-- Note o uso do 'current filter', que vai formatar o preço -->
+                <div ng-show="value">{{ convidado.confirmados }}</div>
+                <div ng-hide="value">{{ convidado.Tag }}</div>
+            </li>
+        </ul>
+    </div>
 </div>

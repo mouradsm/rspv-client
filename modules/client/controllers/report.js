@@ -9,20 +9,27 @@
     ReportController.$inject = ['$scope', '$http'];
 
     function ReportController($scope, $http){
-
-
-
-
-
+        $scope.value = 1;
         $scope.convidados = [];
 
-
-        $scope.processaConvidadosReport = function(convidados){
-
-            var confirmados = [];
+        $scope.massa = [];
 
 
+        $scope.$watch('value', function(value) {
 
+            $scope.processaConvidadosReport($scope.massa, value);
+
+        });
+
+
+        $scope.processaConvidadosReport = function(convidados, option){
+            console.log(option);
+            $scope.convidados = [];
+            convidados.forEach(function(data){
+                if(data.status == option){
+                    $scope.convidados.push(data)
+                }
+            })
         }
 
         $scope.getConvidados = function () {
@@ -35,7 +42,8 @@
                     method: method
                 }).
                     success(function (data) {
-                        $scope.convidados = data;
+                        $scope.massa = data;
+                        $scope.processaConvidadosReport(data,1);
                     }).
                     error(function (err) {
                         console.log('Erro: ', err);
